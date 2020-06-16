@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %} Book Information {% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-4">
+
+        <h3>Book Information:</h3><br>
+        <p>ISBN: {{ book.isbn }}</p>
+        <p>Title: {{ book.title }}</p>
+        <p>Author: {{ book.author }}</p>
+        <p>Publish Year: {{ book.year }}</p> 
+        <h4>Goodreads Ratings</h4>
+        <p>Number of review: {{ gr.work_ratings_count }}</p>
+        <p>Rating: {{ gr.average_rating }}</p>
+        <h4>This site Ratings</h4>
+        <p>Rating: {{ rating }}</p>
+               
+
+        {% if not_posted %}
+            <h4>Review</h4>
+            <form class="form" action="{{ url_for('books', isbn=book.isbn) }}" method="post">
+                <select class="custom-select" name="rating">
+                    <option selected value="">Your rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <textarea class="form-control" name="review" rows="5"></textarea>
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Publish</button>
+            </form>
+        {% endif %}
+    </div>
+    {% if reviews %}
+    <div class="col-8">
+        <h3>Reviews:</h3>
+        {% for review in reviews %}
+            <h5>User: {{ review.username }} Rating: {{ review.rating }}</h5> 
+            <p>{{ review.review }}</p>
+            <hr>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
